@@ -1,0 +1,23 @@
+import os
+import shutil
+def sort_files_by_extension(start_directory):
+    # Обходим все файлы и папки в указанной директории
+    for dirpath, dirnames, filenames in os.walk(start_directory):
+        for filename in filenames:
+            # Получаем расширение файла
+            file_extension = os.path.splitext(filename)[1][1:]  # Получаем расширение без точки
+            
+            if file_extension:  # Проверяем, что расширение не пустое
+                # Создаем папку для данного расширения, если она не существует
+                extension_folder = os.path.join(start_directory, file_extension)
+                if not os.path.exists(extension_folder):
+                    os.makedirs(extension_folder)
+                
+                # Полный путь к файлу
+                file_path = os.path.join(dirpath, filename)
+                
+                # Перемещаем файл в папку с его расширением
+                shutil.move(file_path, os.path.join(extension_folder, filename))
+                print(f'Перемещен: {file_path} -> {os.path.join(extension_folder, filename)}')
+# Пример использования:
+sort_files_by_extension('/path/to/your/directory')
